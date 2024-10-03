@@ -1,0 +1,3 @@
+gymnasium
+ray[rllib]
+numpy
