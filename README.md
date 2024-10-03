@@ -46,28 +46,9 @@ This project aims to model customer inertia and price insensitivity in subscript
 - **.gitignore**: Specifies files and directories to be ignored by version control.
 - **RL.ipynb**: Jacob's initial reinforcement learning for customer inertia model.
 
-## Usage
-
-### Running the Simulation
-
-1. Modify the `InertiaEnv` class to incorporate the new mathematical model.
-2. Configure the PPO algorithm in the `RL.ipynb` file.
-3. Run the training script:
-
 **note: I will likely be using RL.py to run the simulation because Jupyter is very computationally expensive for my computer.**
 
-### Evaluating Results
-
-- After training, evaluate the model's performance by analyzing the reward metrics.
-- Adjust the model and environment setup based on the evaluation.
-
-## Code Structure
-
-- `RL.ipynb`: Main script containing the environment and training setup.
-- `calculate_market_share`: Function to calculate market share based on prices.
-- `InertiaEnv`: Custom environment class for simulating customer inertia.
-
-## References
+## Literature Sources
 
 - [Cao, Manthiou, and Ayadi (2022)](https://doi.org/10.1016/j.jbusres.2022.02.013)
 - [Miller, Sahni, and Strulov-Shlain (2022)](https://doi.org/10.2139/ssrn.4065098)
