@@ -1,19 +1,36 @@
-def calculate_market_share(prices, inertia=10**10, customers=3000):
-    num_companies = len(prices)
+import numpy as np
 
-    # Calculate inverse prices to distribute customers (lower price gets more customers)
-    inverse_prices = [(1/inertia) + (1 / (price + 0.01)) for price in prices]
-    total_inverse = sum(inverse_prices)
+def calculate_market_share(customer_data, initial_market_share):
+    """
+    Calculate the market share based on customer data using logistic regression findings.
 
-    # Calculate market share for each company based on inverse price proportion
-    market_shares = [(inverse_price / total_inverse) * customers for inverse_price in inverse_prices]
+    Parameters:
+    - customer_data (DataFrame): A DataFrame containing customer information with columns:
+      'binary_contract' (0 = Month-to-month, 1 = One/Two Year), 'MonthlyCharges', 'tenure'.
+    - initial_market_share (float): The initial market share of the company before considering churn probabilities.
 
-    # Convert to integers and ensure the total is equal to the number of customers (handle any rounding issues)
-    market_shares = [int(share) for share in market_shares]
-    difference = customers - sum(market_shares)
+    Returns:
+    - adjusted_market_share (float): The adjusted market share after accounting for churn probabilities.
+    """
+    # Coefficients from the logistic regression model (obtained from R analysis)
+    beta_intercept = -1.570033  # Intercept from the logistic regression model
+    beta_contract = -1.357234   # Coefficient for binary_contract (contract length)
+    beta_monthly_charges = 0.025150  # Coefficient for MonthlyCharges
+    beta_tenure = -0.030779    # Coefficient for tenure
+    interaction_contract_monthly = 0.010766  # Interaction term for binary_contract * MonthlyCharges
+    
+    # Calculate churn probability using the logistic regression formula
+    # churn_probability = 1 / (1 + exp(-(X * beta)))
+    customer_data['churn_probability'] = 1 / (1 + np.exp(-(
+        beta_intercept +
+        beta_contract * customer_data['binary_contract'] +
+        beta_monthly_charges * customer_data['MonthlyCharges'] +
+        beta_tenure * customer_data['tenure'] +
+        interaction_contract_monthly * customer_data['binary_contract'] * customer_data['MonthlyCharges']
+    )))
 
-    # Adjust the rounding difference if necessary
-    for i in range(abs(difference)):
-        market_shares[i % num_companies] += 1 if difference > 0 else -1
+    # Adjust market share based on the mean churn probability
+    # If churn_probability is high, reduce the market share accordingly
+    adjusted_market_share = initial_market_share * (1 - customer_data['churn_probability'].mean())
 
-    return market_shares
+    return adjusted_market_share
