@@ -3,7 +3,7 @@ from ray import air, tune
 from ray.rllib.algorithms.ppo import PPOConfig
 from src.env.inertia_env import InertiaEnv
 from src.models.market_model import calculate_market_share
-from .config import CUSTOMERS, PERIODS, STARTING_PRICES, LARGEST_DISCOUNT, LARGEST_INCREASE, NUM_AGENTS, TIMESTEPS_TOTAL, MAX_TRAINING_ITERATION
+from ..config import CUSTOMERS, PERIODS, STARTING_PRICES, LARGEST_DISCOUNT, LARGEST_INCREASE, NUM_AGENTS, TIMESTEPS_TOTAL, MAX_TRAINING_ITERATION
 
 if ray.is_initialized():
     ray.shutdown()

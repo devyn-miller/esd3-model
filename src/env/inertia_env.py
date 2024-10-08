@@ -1,8 +1,8 @@
-import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
-from .market_model import calculate_market_share
+from ..models.market_model import calculate_market_share
+from ..config import STARTING_PRICES, LARGEST_DISCOUNT, LARGEST_INCREASE, PERIODS
 
 class InertiaEnv(MultiAgentEnv):
     def __init__(self, seed=None):
